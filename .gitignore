@@ -1,11 +1,16 @@
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
 
 # Virtual environment
 venv/
 
 
+Outputs/
+evidence_snapshots
+
 # OS files
 .DS_Store
 Thumbs.db
+
+CSV/report.csv
