@@ -17,38 +17,40 @@ from config import (
 
 class SnapshotManager:
 
-    def __init__(self):
-
+  def __init__(self):
         Path(SNAPSHOT_DIR).mkdir(
             parents=True,
             exist_ok=True
         )
-
+        self.previous_alert = False
         self.last_snapshot_time = 0
 
-    def save_snapshot(self, frame, alerts):
+  def save_snapshot(self, frame, alerts):
 
-        if len(alerts) == 0:
-            return None
+    if len(alerts) == 0:
+        self.previous_alert = False
+        return None
 
-        current_time = time.time()
+    current_time = time.time()
 
-        if (
-            current_time - self.last_snapshot_time
-            < SNAPSHOT_INTERVAL
-        ):
-            return None
+    if (
+        current_time - self.last_snapshot_time
+        < SNAPSHOT_INTERVAL
+    ):
+        return None
 
-        self.last_snapshot_time = current_time
+    self.last_snapshot_time = current_time
 
-        timestamp = datetime.now().strftime(
-            "%Y%m%d_%H%M%S"
-        )
+    self.previous_alert = True
 
-        filename = f"snapshot_{timestamp}.jpg"
+    timestamp = datetime.now().strftime(
+        "%Y%m%d_%H%M%S"
+    )
 
-        filepath = Path(SNAPSHOT_DIR) / filename
+    filename = f"snapshot_{timestamp}.jpg"
 
-        cv2.imwrite(str(filepath), frame)
+    filepath = Path(SNAPSHOT_DIR) / filename
 
-        return filepath
+    cv2.imwrite(str(filepath), frame)
+
+    return filepath

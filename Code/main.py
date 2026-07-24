@@ -7,6 +7,7 @@ from alerts import AlertManager
 from snapshot import SnapshotManager
 from csv_logger import CSVLogger
 from utils import draw_boxes, draw_dashboard
+from utils import draw_boxes, draw_dashboard, draw_roi
 
 from config import (
     INPUT_VIDEO,
@@ -63,12 +64,21 @@ while True:
 
     tracked = tracker.update(result)
 
-    stats = analytics.update(tracked)
+    # Crowd Count directly from YOLO
+    crowd_count = len(result.boxes)
+
+    stats = analytics.update(tracked,crowd_count)
 
     current_alerts = alerts.check_alerts(stats)
 
     draw_boxes(frame, tracked)
+    tracker.draw_roi(frame)
+    from utils import draw_roi
 
+    draw_roi(
+    frame,
+    tracker.roi
+    )
     draw_dashboard(
       frame,
       stats,

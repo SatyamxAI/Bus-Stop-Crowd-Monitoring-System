@@ -1,8 +1,15 @@
 from pathlib import Path
-
+import numpy as np
 # ===========================
 # PROJECT PATHS
 # ===========================
+
+ROI=np.array(
+[[ 835 , 223],
+ [ 809 , 556],
+ [1241 , 515],
+ [1237 , 140]]
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -30,7 +37,13 @@ PERSON_CLASS_ID = 0
 # TRACKING SETTINGS
 # ===========================
 
-TRACKER = "bytetrack.yaml"
+TRACKER_CONFIG = "bytetrack.yaml"
+
+TRACK_ACTIVATION_THRESHOLD = 0.25
+
+MIN_MATCHING_THRESHOLD = 0.8
+
+LOST_TRACK_BUFFER = 30
 
 # ===========================
 # CROWD SETTINGS
@@ -42,35 +55,14 @@ MEDIUM_DENSITY = 15
 
 HIGH_DENSITY = 25
 
-# Alert Threshold
-
-ALERT_THRESHOLD = 8
-
-# Waiting Time Alert (seconds)
-
 WAITING_THRESHOLD = 60
-
-# Snapshot Cooldown (seconds)
 
 SNAPSHOT_INTERVAL = 15
 
 # ===========================
-# DISPLAY
+# DISPLAY SETTINGS
 # ===========================
 
 FONT_SCALE = 0.8
 
 THICKNESS = 2
-
-
-# ===========================
-# TRACKING SETTINGS
-# ===========================
-
-TRACKER_CONFIG = "bytetrack.yaml"
-
-TRACK_ACTIVATION_THRESHOLD = 0.25
-
-MIN_MATCHING_THRESHOLD = 0.8
-
-LOST_TRACK_BUFFER = 30

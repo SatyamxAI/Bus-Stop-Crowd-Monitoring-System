@@ -4,10 +4,7 @@ alerts.py
 Generates alerts based on crowd analytics.
 """
 
-from config import (
-    ALERT_THRESHOLD,
-    WAITING_THRESHOLD
-)
+from config import WAITING_THRESHOLD
 
 
 class AlertManager:
@@ -19,18 +16,21 @@ class AlertManager:
 
         alerts = []
 
-        # Crowd Alert
-        if analytics["crowd_count"] >= ALERT_THRESHOLD:
-
+        # High Crowd Alert
+        if analytics["density"] == "HIGH":
             alerts.append("HIGH CROWD")
 
-        # Waiting Time Alert
-        for person_id, waiting_time in analytics["waiting_times"].items():
+        # Long Waiting Alert
+        long_wait = 0
+
+        for waiting_time in analytics["waiting_times"].values():
 
             if waiting_time >= WAITING_THRESHOLD:
+                long_wait += 1
 
-                alerts.append(
-                    f"LONG WAIT : Person {int(person_id)}"
-                )
+        if long_wait > 0:
+            alerts.append(
+                f"{long_wait} People Waiting Too Long"
+            )
 
         return alerts

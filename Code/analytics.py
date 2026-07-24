@@ -4,7 +4,7 @@ analytics.py
 This module computes crowd analytics.
 
 Features:
-- Crowd Count
+- Current Crowd Count
 - Crowd Density
 - Waiting Time
 - Unique Persons
@@ -22,31 +22,37 @@ from config import (
 class CrowdAnalytics:
 
     def __init__(self):
-
         # Stores first appearance time of each tracked person
         self.entry_times = {}
 
-    def update(self, tracked_detections):
+        # Stores every unique person ever seen
+        self.all_people = set()
+
+    def update(self, tracked_detections, crowd_count):
 
         current_time = time.time()
 
         tracker_ids = tracked_detections.tracker_id
 
-        # Handle case when no people are detected
+        # Handle no detections
         if tracker_ids is None:
             tracker_ids = []
 
-        crowd_count = len(tracker_ids)
-
         waiting_times = {}
 
-        # Record entry time for new IDs
+        # Process each tracked person
         for person_id in tracker_ids:
 
-            if person_id not in self.entry_times:
+            person_id = int(person_id)
 
+            # Store unique person
+            self.all_people.add(person_id)
+
+            # Store first appearance time
+            if person_id not in self.entry_times:
                 self.entry_times[person_id] = current_time
 
+            # Calculate waiting time
             waiting_times[person_id] = round(
                 current_time - self.entry_times[person_id],
                 1
@@ -54,15 +60,12 @@ class CrowdAnalytics:
 
         # Determine crowd density
         if crowd_count <= LOW_DENSITY:
-
             density = "LOW"
 
         elif crowd_count <= MEDIUM_DENSITY:
-
             density = "MEDIUM"
 
         else:
-
             density = "HIGH"
 
         return {
@@ -73,5 +76,6 @@ class CrowdAnalytics:
 
             "waiting_times": waiting_times,
 
-            "unique_people": len(self.entry_times)
+            "unique_people": len(self.all_people)
+
         }
