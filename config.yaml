@@ -1,0 +1,66 @@
+# config.yaml - Settings for the Bus Stop Crowd Monitoring System
+# Edit the values below to change how the system behaves.
+
+# -------------------------------------------------------
+# Model Settings
+# -------------------------------------------------------
+
+# Path to the YOLOv8 model weights file (inside the models/ folder)
+# Options: yolov8n.pt (fastest) | yolov8s.pt | yolov8m.pt | yolov8l.pt | yolov8x.pt (most accurate)
+model: "models/yolov8n.pt"
+
+# Minimum confidence score to count a detection (0.0 to 1.0)
+confidence_threshold: 0.40
+
+# IoU threshold for Non-Maximum Suppression (removes overlapping boxes)
+iou_threshold: 0.45
+
+# -------------------------------------------------------
+# Alert Thresholds
+# -------------------------------------------------------
+
+# How many people at the bus stop before a HIGH DENSITY alert fires
+crowd_alert_threshold: 15
+
+# How many seconds someone must stand still before a LONG WAIT alert fires
+waiting_time_threshold: 30
+
+# Minimum gap (in seconds) before the same alert type can fire again
+alert_cooldown_seconds: 60
+
+# -------------------------------------------------------
+# Tracking Settings
+# -------------------------------------------------------
+
+# If a person moves less than this many pixels between frames, they are "stationary"
+stationary_pixel_threshold: 25
+
+# -------------------------------------------------------
+# Output Settings
+# -------------------------------------------------------
+
+# Save an annotated video of the processed footage
+save_video: true
+
+# Frame rate of the output video (set to 0 to match the source video)
+output_fps: 0
+
+# Save a screenshot every time an alert is triggered
+snapshot_on_alert: true
+
+# Output folder paths (all inside the data/ folder)
+output_dir:       "data/output"
+snapshot_subdir:  "snapshots"
+report_subdir:    "reports"
+video_subdir:     "videos"
+
+# -------------------------------------------------------
+# Preview Settings
+# -------------------------------------------------------
+
+# Show a live preview window while processing
+show_preview: true
+
+# Size of the preview window in pixels
+preview_width:  1280
+preview_height: 720
